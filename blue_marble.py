@@ -18,7 +18,7 @@ From readme.pdf:
 The BMNG dataset is gridded at the following spatial resolutions: 15,
 60 and 240 arc-seconds (500m, 2km, and 8km approximate spacing at the
 equator). It uses a geographic (Plate Carr\'{e}e) projection, which is
-based on an equal latitudelongitude grid spacing (not an equal area
+based on an equal latitude-longitude grid spacing (not an equal area
 projection!). The projection datum is WGS84.
 
 1.5 Citation of the BMNG
