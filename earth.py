@@ -50,4 +50,6 @@ def earth_actor(theta_resolution=60,
     transform = vtk.vtkTransform()
     transform.Scale(1, 1, (1 - 1/WGS84.f_inv))
     actor.SetUserTransform(transform)
+    actor.GetProperty().SetAmbient(1)
+    actor.GetProperty().SetDiffuse(0)
     return actor
