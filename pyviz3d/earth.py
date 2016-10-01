@@ -8,7 +8,7 @@ from blue_marble import fetch
 class Ellipsoid(namedtuple('Ellipsoid', 'a f_inv')):
     """
     a:     semi-major axis [m]
-    f_inv: flattening factor
+    f_inv: flattening factor inverse
     """
     pass
 
