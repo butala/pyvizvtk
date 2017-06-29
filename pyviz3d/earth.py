@@ -37,8 +37,7 @@ def earth_actor(theta_resolution=60,
     texture.SetInputConnection(reader.GetOutputPort())
     transform_texture = vtk.vtkTransformTextureCoords()
     transform_texture.SetInputConnection(source.GetOutputPort())
-    transform_texture.SetPosition(0.125, 0, 0)
-    transform_texture.SetScale(0.25, 1, 1)
+    transform_texture.SetPosition(0.5, 0, 0)
     # mapper
     mapper = vtk.vtkPolyDataMapper()
     mapper.SetInputConnection(transform_texture.GetOutputPort())
