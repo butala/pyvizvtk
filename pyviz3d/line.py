@@ -1,3 +1,4 @@
+import logging
 from itertools import repeat
 from collections import Iterable
 
@@ -68,6 +69,8 @@ def line_actor(xyz1,
 
 
 if __name__ == '__main__':
+    logging.basicConfig(level=logging.INFO)
+
     stn_xyz_m = (-2493283.706,    -4655240.239,  3565508.382)
     sat_xyz1_m = (-20507829.111,  -9658491.074, 13900101.870)
     sat_xyz2_m = (-23554289.507, -11952136.468,  3279494.183)
