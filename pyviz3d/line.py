@@ -1,10 +1,12 @@
+from __future__ import absolute_import
+
 import logging
 from itertools import repeat
 from collections import Iterable
 
 import vtk
 
-from color import CYAN
+from .color import CYAN
 
 
 def line_actor(xyz1,
@@ -15,13 +17,13 @@ def line_actor(xyz1,
     ???
     """
     if isinstance(xyz1[0], Iterable):
-        xyz1_id = range(len(xyz1))
+        xyz1_id = list(range(len(xyz1)))
     else:
         xyz1 = [xyz1]
         xyz1_id = repeat(0)
 
     if isinstance(xyz2[0], Iterable):
-        xyz2_id = range(len(xyz2))
+        xyz2_id = list(range(len(xyz2)))
     else:
         xyz2 = [xyz2]
         xyz2_id = repeat(0)
@@ -82,7 +84,7 @@ if __name__ == '__main__':
     #actor = line_actor(stn_xyz_km, [sat_xyz1_km, sat_xyz2_km])
     actor = line_actor([sat_xyz1_km, sat_xyz2_km], stn_xyz_km)
 
-    from viz import Renderer
+    from .viz import Renderer
     ren = Renderer()
 
     ren.ren.AddActor(actor)

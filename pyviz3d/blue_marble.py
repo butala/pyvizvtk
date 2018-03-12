@@ -1,10 +1,12 @@
+from __future__ import absolute_import
+
 import os
 import sys
-import urllib2
+import urllib.request
+import urllib.parse
 import logging
 import posixpath
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
-from urlparse import urlparse
 from contextlib import closing
 
 logger = logging.getLogger('pyviz3d.blue_marble')
@@ -47,20 +49,14 @@ def fetch(path,
         url = URL_MAP[resolution]
     except IndexError:
         raise ValueError('resolution must be one of: {}'.format(' '.join(sorted(URL_MAP))))
-    fname = posixpath.split(urlparse(url).path)[1]
+    fname = posixpath.split(urllib.parse.urlparse(url).path)[1]
     local_fname = os.path.join(path, fname)
     if os.path.isfile(local_fname):
         logger.info('{} exists --- not downloading'.format(local_fname))
     else:
         logger.info('fetching {} and storing to {}'.format(url,
                                                            local_fname))
-        with closing(urllib2.urlopen(url)) as remote_fid, \
-             open(local_fname, 'w') as local_fid:
-            while True:
-                buff = remote_fid.read()
-                if not buff:
-                    break
-                local_fid.write(buff)
+        urllib.request.urlretrieve(url, filename=local_fname)
     return local_fname
 
 

@@ -1,8 +1,11 @@
-import vtk
+from __future__ import absolute_import
+
 from collections import namedtuple
 
-from config import CACHE_PATH
-from blue_marble import fetch
+import vtk
+
+from .config import CACHE_PATH
+from .blue_marble import fetch
 
 
 class Ellipsoid(namedtuple('Ellipsoid', 'a f_inv')):

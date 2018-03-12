@@ -1,6 +1,8 @@
+from __future__ import absolute_import
+
 import vtk
 
-from earth import WGS84, earth_actor
+from .earth import WGS84, earth_actor
 
 
 class Renderer(object):

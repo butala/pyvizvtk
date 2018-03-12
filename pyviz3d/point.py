@@ -1,9 +1,11 @@
+from __future__ import absolute_import
+
 from itertools import repeat
 from collections import Iterable
 
 import vtk
 
-from color import YELLOW
+from .color import YELLOW
 
 
 def point_actor(xyz,
@@ -76,7 +78,7 @@ if __name__ == '__main__':
 
     actor = point_actor(sat_xyz1_km)
 
-    from viz import Renderer
+    from .viz import Renderer
     ren = Renderer()
 
     ren.ren.AddActor(actor)

@@ -1,9 +1,11 @@
+from __future__ import absolute_import
+
 from itertools import repeat
 from collections import Iterable
 
 import vtk
 
-from color import RED
+from .color import RED
 
 
 def linear_path(xyz_list,
@@ -24,7 +26,7 @@ def linear_path(xyz_list,
         points.InsertNextPoint(xyz)
 
     lines = vtk.vtkCellArray()
-    ids = range(N)
+    ids = list(range(N))
     for i, j in zip(ids[:-1], ids[1:]):
         lines.InsertNextCell(2)
         lines.InsertCellPoint(i)
@@ -66,7 +68,7 @@ if __name__ == '__main__':
 
     actor = linear_path(xyz_km)
 
-    from viz import Renderer
+    from .viz import Renderer
     ren = Renderer()
 
     ren.ren.AddActor(actor)
