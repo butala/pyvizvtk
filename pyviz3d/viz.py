@@ -8,8 +8,9 @@ from .earth import WGS84, earth_actor
 class Renderer(object):
     def __init__(self,
                  earth=True,
+                 position_camera=True,
                  background_color=(0.3, 0.3, 0.3),
-                 size=(800, 800)):
+                 size=(1600, 1600)):
         """
         """
         # create a rendering window and renderer
@@ -23,7 +24,8 @@ class Renderer(object):
         self.iren.SetInteractorStyle(self.style)
         # setup camera
         self.camera = vtk.vtkCamera()
-        self.reset_camera()
+        if position_camera:
+            self.reset_camera()
         self.ren.SetActiveCamera(self.camera)
         # setup render window
         self.ren.SetBackground(*background_color)
