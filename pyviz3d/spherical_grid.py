@@ -31,10 +31,8 @@ def spherical_grid_spokes(r1,
     points = vtk.vtkPoints()
     lines = vtk.vtkCellArray()
 
-
     for i, (x1, y1, z1, x2, y2, z2) in enumerate(zip(x1s, y1s, z1s,
-                                                     x2s, y2s, z2s),
-                                                 0):
+                                                     x2s, y2s, z2s)):
         points.InsertNextPoint((x1, y1, z1))
         points.InsertNextPoint((x2, y2, z2))
         lines.InsertNextCell(2)
