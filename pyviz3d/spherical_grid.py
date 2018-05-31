@@ -137,6 +137,125 @@ def spherical_grid_actor(r1,
     return spherical_grid
 
 
+def spherical_voxel_actor(r1,
+                          r2,
+                          theta1,
+                          theta2,
+                          phi1,
+                          phi2,
+                          N_r=10,
+                          N_theta=10,
+                          N_phi=10):
+    """
+    """
+    if r1 > r2:
+        r1, r2 = r2, r1
+    if phi1 > phi2:
+        phi1, phi2 = phi2, phi1
+    if theta1 > theta2:
+        theta1, theta2 = theta2, theta1
+
+    # surface 1: r = r1
+    phi_vec = NP.linspace(phi1, phi2, N_phi)
+    theta_vec = NP.linspace(theta1, theta2, N_theta)
+
+    phi, theta = NP.meshgrid(phi_vec, theta_vec)
+
+    x_r = NP.sin(theta) * NP.cos(phi)
+    y_r = NP.sin(theta) * NP.sin(phi)
+    z_r = NP.cos(theta)
+
+    points = vtk.vtkPoints()
+
+    for x_r_i, y_r_i, z_r_i in zip(x_r.flat, y_r.flat, z_r.flat):
+        p = (r1 * x_r_i,
+             r1 * y_r_i,
+             r1 * z_r_i)
+        points.InsertNextPoint(p)
+
+    quads = []
+
+    I, J = phi.shape
+
+    for i in range(I - 1):
+        for j in range(J - 1):
+            quad = vtk.vtkQuad()
+            quad.GetPointIds().SetId(0, i*N_phi + j)
+            quad.GetPointIds().SetId(1, (i + 1)*N_phi + j)
+            quad.GetPointIds().SetId(2, (i + 1)*N_phi + j + 1)
+            quad.GetPointIds().SetId(3, i*N_phi + j + 1)
+            quads.append(quad)
+
+    # surface 2: r = r2
+    for x_r_i, y_r_i, z_r_i in zip(x_r.flat, y_r.flat, z_r.flat):
+        p = (r2 * x_r_i,
+             r2 * y_r_i,
+             r2 * z_r_i)
+        points.InsertNextPoint(p)
+
+    K = I * J
+
+    for i in range(I - 1):
+        for j in range(J - 1):
+            quad = vtk.vtkQuad()
+            quad.GetPointIds().SetId(0, i*N_phi + j + K)
+            quad.GetPointIds().SetId(3, i*N_phi + j + 1 + K)
+            quad.GetPointIds().SetId(2, (i + 1)*N_phi + j + 1 + K)
+            quad.GetPointIds().SetId(1, (i + 1)*N_phi + j + K)
+            quads.append(quad)
+
+
+    # surface 3: phi = phi1
+    for i in range(N_theta - 1):
+        quad = vtk.vtkQuad()
+        quad.GetPointIds().SetId(0, i*N_phi)
+        quad.GetPointIds().SetId(1, i*N_phi + K)
+        quad.GetPointIds().SetId(2, (i + 1)*N_phi + K)
+        quad.GetPointIds().SetId(3, (i + 1)*N_phi)
+        quads.append(quad)
+
+
+    # surface 4: phi = phi2
+    for i in range(N_theta - 1):
+        quad = vtk.vtkQuad()
+        quad.GetPointIds().SetId(0, i*N_phi + N_phi - 1)
+        quad.GetPointIds().SetId(1, (i + 1)*N_phi + N_phi - 1)
+        quad.GetPointIds().SetId(2, (i + 1)*N_phi + K + N_phi - 1)
+        quad.GetPointIds().SetId(3, i*N_phi + K + N_phi - 1)
+        quads.append(quad)
+
+    # surface 5: theta = theta2
+    for j in range(N_phi - 1):
+        quad = vtk.vtkQuad()
+        quad.GetPointIds().SetId(0, j)
+        quad.GetPointIds().SetId(1, j + K)
+        quad.GetPointIds().SetId(2, j + 1 + K)
+        quad.GetPointIds().SetId(3, j + 1)
+        quads.append(quad)
+
+    # surface 6: theta = theta2
+    for j in range(N_phi - 1):
+        quad = vtk.vtkQuad()
+        quad.GetPointIds().SetId(0, j + N_phi * (N_theta - 1))
+        quad.GetPointIds().SetId(1, j + 1 + N_phi * (N_theta - 1))
+        quad.GetPointIds().SetId(2, j + 1 + K + N_phi * (N_theta - 1))
+        quad.GetPointIds().SetId(3, j + K + N_phi * (N_theta - 1))
+        quads.append(quad)
+
+    # build unstructured grid
+    voxel = vtk.vtkUnstructuredGrid()
+    voxel.Allocate(len(quads), len(quads))
+    for quad in quads:
+        voxel.InsertNextCell(quad.GetCellType(),
+                             quad.GetPointIds())
+    voxel.SetPoints(points)
+    voxel_mapper = vtk.vtkDataSetMapper()
+    voxel_mapper.SetInputData(voxel)
+    voxel_actor = vtk.vtkActor()
+    voxel_actor.SetMapper(voxel_mapper)
+    return voxel_actor
+
+
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
 
@@ -154,6 +273,35 @@ if __name__ == '__main__':
     ren = Renderer(earth=False, position_camera=False)
 
     ren.ren.AddActor(spherical_grid)
+
+
+    r_vec = NP.linspace(r1, r2, N_r + 1)
+    theta_vec = NP.linspace(0, NP.pi, N_theta, endpoint=False) + NP.pi / N_theta
+    phi_vec = NP.linspace(0, 2*NP.pi, N_phi, endpoint=False) + NP.pi / N_phi
+
+    I, J, K = 1, 1, 3
+
+    r1 = r_vec[I]
+    r2 = r_vec[I + 1]
+
+    theta1 = theta_vec[J]
+    theta2 = theta_vec[J + 1]
+
+    phi1 = phi_vec[K]
+    phi2 = phi_vec[K + 1]
+
+    voxel = spherical_voxel_actor(r1,
+                                  r2,
+                                  theta1,
+                                  theta2,
+                                  phi1,
+                                  phi2)
+
+    voxel.GetProperty().SetOpacity(.5)
+    voxel.GetProperty().SetColor(1, 0, 0)
+
+
+    ren.ren.AddActor(voxel)
 
     # Axes
     axes = vtk.vtkAxesActor()
