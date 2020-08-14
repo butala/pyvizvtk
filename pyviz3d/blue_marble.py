@@ -7,6 +7,8 @@ import posixpath
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 from contextlib import closing
 
+from tqdm import tqdm
+
 logger = logging.getLogger('pyviz3d.blue_marble')
 
 
@@ -38,6 +40,23 @@ URL_MAP = {
 }
 
 
+class TqdmUpTo(tqdm):
+    """Provides `update_to(n)` which uses `tqdm.update(delta_n)`."""
+    # See https://gist.github.com/leimao/37ff6e990b3226c2c9670a2cd1e4a6f5
+    def update_to(self, b=1, bsize=1, tsize=None):
+        """
+        b  : int, optional
+            Number of blocks transferred so far [default: 1].
+        bsize  : int, optional
+            Size of each block (in tqdm units) [default: 1].
+        tsize  : int, optional
+            Total size (in tqdm units). If [default: None] remains unchanged.
+        """
+        if tsize is not None:
+            self.total = tsize
+        self.update(b * bsize - self.n)  # will also set self.n = b * bsize
+
+
 def fetch(path,
           resolution='medium',
           block_size=8192):
@@ -54,7 +73,10 @@ def fetch(path,
     else:
         logger.info('fetching {} and storing to {}'.format(url,
                                                            local_fname))
-        urllib.request.urlretrieve(url, filename=local_fname)
+        with TqdmUpTo(unit='B', unit_scale=True, unit_divisor=1024, miniters=1,
+              desc=url.split('/')[-1]) as t:  # all optional kwargs
+            urllib.request.urlretrieve(url, filename=local_fname,
+                                       reporthook=t.update_to, data=None)
     return local_fname
 
 
