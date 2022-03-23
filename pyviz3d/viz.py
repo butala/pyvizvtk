@@ -7,6 +7,7 @@ class Renderer(object):
     def __init__(self,
                  earth=True,
                  position_camera=True,
+                 interactor_style_switch=False,
                  background_color=(0.3, 0.3, 0.3),
                  size=(1600, 1600)):
         """
@@ -19,6 +20,8 @@ class Renderer(object):
         self.iren = vtk.vtkRenderWindowInteractor()
         self.iren.SetRenderWindow(self.ren_win)
         self.style = vtk.vtkInteractorStyleTrackballCamera()
+        if interactor_style_switch:
+            self.style = vtk.vtkInteractorStyleSwitch()
         self.iren.SetInteractorStyle(self.style)
         # setup camera
         self.camera = vtk.vtkCamera()
