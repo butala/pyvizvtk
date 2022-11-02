@@ -1,5 +1,5 @@
 from itertools import repeat
-from collections import Iterable
+from collections.abc import Iterable
 
 import vtk
 
