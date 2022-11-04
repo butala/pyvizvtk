@@ -3,9 +3,8 @@ import vtk
 from .earth import WGS84, earth_actor
 
 
-class Renderer(object):
+class Renderer:
     def __init__(self,
-                 earth=True,
                  position_camera=True,
                  background_color=(0.3, 0.3, 0.3),
                  size=(1600, 1600)):
@@ -28,16 +27,16 @@ class Renderer(object):
         # setup render window
         self.ren.SetBackground(*background_color)
         self.ren_win.SetSize(*size)
-        if earth:
-            self.ren.AddActor(earth_actor())
+
+    def add_actor(self, actor):
+        """
+        """
+        return self.ren.AddActor(actor)
 
     def reset_camera(self):
         """
         """
-        self.camera.SetPosition(5 * WGS84.a / 1e3, 0, 0)
-        self.camera.SetClippingRange(1, 100 * WGS84.a / 1e3)
-        self.camera.SetFocalPoint(0, 0, 0)
-        self.camera.SetViewUp(0, 0, 1)
+        self.ren.ResetCamera()
 
     def start(self):
         """
@@ -47,6 +46,20 @@ class Renderer(object):
         self.iren.Start()
 
 
+class EarthRenderer(Renderer):
+    def __init__(self, *args, **kwds):
+        super().__init__(*args, **kwds)
+        self.add_actor(earth_actor())
+
+    def reset_camera(self):
+        """
+        """
+        self.camera.SetPosition(5 * WGS84.a / 1e3, 0, 0)
+        self.camera.SetClippingRange(1, 100 * WGS84.a / 1e3)
+        self.camera.SetFocalPoint(0, 0, 0)
+        self.camera.SetViewUp(0, 0, 1)
+
+
 if __name__ == '__main__':
-    ren = Renderer()
+    ren = EarthRenderer()
     ren.start()
