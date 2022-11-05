@@ -67,6 +67,23 @@ class Renderer:
         self._scalar_bar_widget.On()
         return self._scalar_bar_widget
 
+    def png(self, png_fname, scale=1):
+        """
+        """
+        self.ren_win.Render()
+        w2if = vtk.vtkWindowToImageFilter()
+        w2if.SetInput(self.ren_win)
+        w2if.SetScale(scale)
+        # w2if.SetInputBufferTypeToRGBA()
+        w2if.SetInputBufferTypeToRGB()
+        w2if.ReadFrontBufferOff()
+        w2if.Update()
+
+        writer = vtk.vtkPNGWriter()
+        writer.SetFileName(png_fname)
+        writer.SetInputConnection(w2if.GetOutputPort())
+        writer.Write()
+        return png_fname
 
     def start(self):
         """
