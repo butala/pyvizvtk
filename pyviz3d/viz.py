@@ -34,6 +34,21 @@ class Renderer:
         """
         return self.ren.AddActor(actor)
 
+    def remove_actor(self, actor):
+        """
+        """
+        return self.ren.RemoveActor(actor)
+
+    def add_volume(self, volume):
+        """
+        """
+        return self.ren.AddVolume(volume)
+
+    def remove_volume(self, volume):
+        """
+        """
+        return self.ren.RemoveVolume(volume)
+
     def reset_camera(self):
         """
         """
@@ -84,6 +99,13 @@ class Renderer:
         writer.SetInputConnection(w2if.GetOutputPort())
         writer.Write()
         return png_fname
+
+    def depth_peeling_setup(self):
+        """
+        https://gitlab.kitware.com/vtk/vtk/-/issues/18135
+        """
+        self.ren.UseDepthPeelingOn()
+        self.ren.UseDepthPeelingForVolumesOn()
 
     def start(self):
         """
