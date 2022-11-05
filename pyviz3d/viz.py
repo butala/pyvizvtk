@@ -1,6 +1,7 @@
 import vtk
 
 from .earth import WGS84, earth_actor
+from .util import cube_axes_actor
 
 
 class Renderer:
@@ -37,6 +38,35 @@ class Renderer:
         """
         """
         self.ren.ResetCamera()
+
+    def axes_on(self, bounds):
+        """
+        """
+        self._cube_axes_actor = cube_axes_actor(bounds, self.ren.GetActiveCamera())
+        self.add_actor(self._cube_axes_actor)
+        return self._cube_axes_actor
+
+    def axes_off(self):
+        """
+        """
+        try:
+            self.ren.RemoveActor(self._cube_axes_actor)
+        except NameError:
+            pass
+
+    def colorbar(self, lut):
+        """
+        """
+        self._scalar_bar = vtk.vtkScalarBarActor()
+        self._scalar_bar.SetOrientationToHorizontal()
+        self._scalar_bar.SetLookupTable(lut)
+
+        self._scalar_bar_widget = vtk.vtkScalarBarWidget()
+        self._scalar_bar_widget.SetInteractor(self.iren)
+        self._scalar_bar_widget.SetScalarBarActor(self._scalar_bar)
+        self._scalar_bar_widget.On()
+        return self._scalar_bar_widget
+
 
     def start(self):
         """
