@@ -82,8 +82,8 @@ if __name__ == '__main__':
     #actor = line_actor(stn_xyz_km, [sat_xyz1_km, sat_xyz2_km])
     actor = line_actor([sat_xyz1_km, sat_xyz2_km], stn_xyz_km)
 
-    from .viz import Renderer
-    ren = Renderer()
+    from .viz import EarthRenderer
+    ren = EarthRenderer()
 
     ren.ren.AddActor(actor)
 
