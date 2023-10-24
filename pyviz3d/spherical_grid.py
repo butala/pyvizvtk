@@ -270,7 +270,7 @@ if __name__ == '__main__':
 
     from .viz import Renderer
 
-    ren = Renderer(earth=False, position_camera=False)
+    ren = Renderer(position_camera=False)
 
     ren.ren.AddActor(spherical_grid)
 
