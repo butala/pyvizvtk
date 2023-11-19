@@ -4,6 +4,10 @@ import vtk
 import numpy as NP
 
 
+"""
+DOCUMENT THE THETA CONVENTION!
+"""
+
 def spherical_grid_spokes(r1,
                           r2,
                           N_theta,
@@ -20,13 +24,13 @@ def spherical_grid_spokes(r1,
     r1s = NP.full_like(thetas, r1)
     r2s = NP.full_like(thetas, r2)
 
-    x1s = r1s * NP.sin(thetas) * NP.cos(phis)
-    y1s = r1s * NP.sin(thetas) * NP.sin(phis)
-    z1s = r1s * NP.cos(thetas)
+    x1s = r1s * NP.cos(thetas) * NP.cos(phis)
+    y1s = r1s * NP.cos(thetas) * NP.sin(phis)
+    z1s = r1s * NP.sin(thetas)
 
-    x2s = r2s * NP.sin(thetas) * NP.cos(phis)
-    y2s = r2s * NP.sin(thetas) * NP.sin(phis)
-    z2s = r2s * NP.cos(thetas)
+    x2s = r2s * NP.cos(thetas) * NP.cos(phis)
+    y2s = r2s * NP.cos(thetas) * NP.sin(phis)
+    z2s = r2s * NP.sin(thetas)
 
     points = vtk.vtkPoints()
     lines = vtk.vtkCellArray()
@@ -79,8 +83,8 @@ def spherical_grid_rings(r1,
     rs = NP.concatenate(rs)
     thetas = NP.concatenate(thetas)
 
-    x = rs * NP.sin(thetas)
-    z = rs * NP.cos(thetas)
+    x = rs * NP.cos(thetas)
+    z = rs * NP.sin(thetas)
 
     apd = vtk.vtkAppendPolyData()
     for x_i, z_i in zip(x, z):
@@ -161,9 +165,9 @@ def spherical_voxel_actor(r1,
 
     phi, theta = NP.meshgrid(phi_vec, theta_vec)
 
-    x_r = NP.sin(theta) * NP.cos(phi)
-    y_r = NP.sin(theta) * NP.sin(phi)
-    z_r = NP.cos(theta)
+    x_r = NP.cos(theta) * NP.cos(phi)
+    y_r = NP.cos(theta) * NP.sin(phi)
+    z_r = NP.sin(theta)
 
     points = vtk.vtkPoints()
 
