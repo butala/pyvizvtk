@@ -69,6 +69,26 @@ class Renderer:
         except NameError:
             pass
 
+    def orientation_on(self, viewport=(0.8, 0, 1.0, 0.2)):
+        """
+        """
+        self._om_axes = vtk.vtkAxesActor()
+        self._om = vtk.vtkOrientationMarkerWidget()
+        self._om.SetOrientationMarker(self._om_axes)
+        # Position lower right in the viewport.
+        self._om.SetViewport(*viewport)
+        self._om.SetInteractor(self.iren)
+        self._om.EnabledOn()
+        self._om.InteractiveOn()
+
+    def orientation_off(self):
+        """
+        """
+        try:
+            self._om.EnabledOff()
+        except NameError:
+            pass
+
     def colorbar(self, lut):
         """
         """
