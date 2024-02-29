@@ -25,8 +25,8 @@ def earth_actor(theta_resolution=60,
     ???
     """
     source = vtk.vtkTexturedSphereSource()
-    source.SetThetaResolution(60)
-    source.SetPhiResolution(60)
+    source.SetThetaResolution(theta_resolution)
+    source.SetPhiResolution(phi_resolution)
     source.SetRadius(WGS84.a / 1e3)
     # read texture
     pngfile = fetch(cache_path,
