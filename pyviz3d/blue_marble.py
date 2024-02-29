@@ -23,7 +23,7 @@ projection!). The projection datum is WGS84.
 
 1.5 Citation of the BMNG
 
-R. St\:{o}ckli, E. Vermote, N. Saleous, R. Simmon and D. Herring
+R. St:{o}ckli, E. Vermote, N. Saleous, R. Simmon and D. Herring
 (2005). The Blue Marble Next Generation - A true color earth dataset
 including seasonal dynamics from MODIS. Published by the NASA Earth
 Observatory. Corresponding author: rstockli@climate.gsfc.nasa.gov
