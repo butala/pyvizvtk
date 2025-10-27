@@ -3,11 +3,11 @@ from collections.abc import Iterable
 
 import vtk
 
-from .color import RED
+from .color import get_color
 
 
 def linear_path(xyz_list,
-                color=RED,
+                color=get_color('red'),
                 alpha=1):
     """
     """

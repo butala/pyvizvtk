@@ -4,12 +4,12 @@ from collections.abc import Iterable
 
 import vtk
 
-from .color import CYAN
+from .color import get_color
 
 
 def line_actor(xyz1,
                xyz2,
-               color=CYAN,
+               color=get_color('cyan'),
                alpha=1):
     """
     ???

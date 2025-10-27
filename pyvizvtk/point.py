@@ -3,11 +3,9 @@ from collections.abc import Iterable
 
 import vtk
 
-from .color import YELLOW
-
 
 def point_actor(xyz,
-                color=YELLOW,
+                color=get_color('yellow'),
                 size=100,
                 phi_resolution=10,
                 theta_resolution=10,

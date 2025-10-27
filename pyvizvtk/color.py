@@ -1,11 +1,7 @@
-YELLOW = (255, 255, 0)
+import matplotlib.colors
 
-CYAN = (0, 255, 255)
 
-RED = (255, 0, 0)
-
-BLUE = (0, 0, 255)
-
-BLACK = (0, 0, 0)
-
-WHITE = (255, 255, 255)
+def get_color(name):
+    """
+    """
+    return tuple([int(x * 255) for x in matplotlib.colors.to_rgb(name)])
