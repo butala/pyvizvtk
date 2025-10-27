@@ -2,6 +2,7 @@ from itertools import repeat
 from collections.abc import Iterable
 
 import vtk
+from .color import get_color
 
 
 def point_actor(xyz,
