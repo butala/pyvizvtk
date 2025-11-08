@@ -6,7 +6,7 @@ from .color import get_color
 
 
 def point_actor(xyz,
-                color=get_color('yellow'),
+                color=None,
                 size=100,
                 phi_resolution=10,
                 theta_resolution=10,
@@ -14,6 +14,9 @@ def point_actor(xyz,
     """
     ???
     """
+    if color is None:
+        color = get_color('yellow')
+
     if not isinstance(xyz[0], Iterable):
         xyz = [xyz]
 
