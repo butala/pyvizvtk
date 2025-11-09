@@ -9,7 +9,7 @@ from .color import get_color
 
 def line_source(xyz1,
                 xyz2,
-                color=None),
+                color=None,
                 alpha=None):
     """
     """
