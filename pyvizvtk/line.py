@@ -7,12 +7,11 @@ import vtk
 from .color import get_color
 
 
-def line_actor(xyz1,
-               xyz2,
-               color=get_color('cyan'),
-               alpha=1):
+def line_source(xyz1,
+                xyz2,
+                color=get_color('cyan'),
+                alpha=1):
     """
-    ???
     """
     if isinstance(xyz1[0], Iterable):
         xyz1_id = list(range(len(xyz1)))
@@ -58,7 +57,17 @@ def line_actor(xyz1,
                                 color_i[2],
                                 int(alpha_i * 255))
         polydata.GetCellData().SetScalars(colors)
+    return polydata
 
+
+def line_actor(xyz1,
+               xyz2,
+               color=get_color('cyan'),
+               alpha=1):
+    """
+    ???
+    """
+    polydata = line_source(xyz1, xyz2, color=color, alpha=alpha)
     mapper = vtk.vtkPolyDataMapper()
     mapper.SetInputData(polydata)
 
