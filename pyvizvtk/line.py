@@ -9,8 +9,8 @@ from .color import get_color
 
 def line_source(xyz1,
                 xyz2,
-                color=get_color('cyan'),
-                alpha=1):
+                color=None),
+                alpha=None):
     """
     """
     if isinstance(xyz1[0], Iterable):
@@ -27,11 +27,12 @@ def line_source(xyz1,
 
     N = max(len(xyz1), len(xyz2))
 
-    if not isinstance(color[0], Iterable):
-        color = repeat(color, N)
-
-    if not isinstance(alpha, Iterable):
-        alpha = repeat(alpha, N)
+    if color is not None:
+        assert alpha is not None
+        if not isinstance(color[0], Iterable):
+            color = repeat(color, N)
+        if not isinstance(alpha, Iterable):
+            alpha = repeat(alpha, N)
 
     points = vtk.vtkPoints()
     for xyz1_i in xyz1:
@@ -49,14 +50,16 @@ def line_source(xyz1,
     polydata.SetPoints(points)
     polydata.SetLines(lines)
 
-    colors = vtk.vtkUnsignedCharArray()
-    colors.SetNumberOfComponents(4)
-    for color_i, alpha_i in zip(color, alpha):
-        colors.InsertNextTuple4(color_i[0],
-                                color_i[1],
-                                color_i[2],
-                                int(alpha_i * 255))
-        polydata.GetCellData().SetScalars(colors)
+    if color is not None:
+        colors = vtk.vtkUnsignedCharArray()
+        colors.SetNumberOfComponents(4)
+        for color_i, alpha_i in zip(color, alpha):
+            colors.InsertNextTuple4(color_i[0],
+                                    color_i[1],
+                                    color_i[2],
+                                    int(alpha_i * 255))
+            polydata.GetCellData().SetScalars(colors)
+
     return polydata
 
 
