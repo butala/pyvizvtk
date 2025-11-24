@@ -37,9 +37,9 @@ def linear_path(xyz_list,
     colors = vtk.vtkUnsignedCharArray()
     colors.SetNumberOfComponents(4)
     for color_i, alpha_i in zip(color, alpha):
-        colors.InsertNextTuple4(color_i[0],
-                                color_i[1],
-                                color_i[2],
+        colors.InsertNextTuple4(int(color_i[0] * 255),
+                                int(color_i[1] * 255),
+                                int(color_i[2] * 255),
                                 int(alpha_i * 255))
         polydata.GetCellData().SetScalars(colors)
 
